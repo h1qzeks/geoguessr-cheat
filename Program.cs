@@ -8,7 +8,7 @@ using System.Threading;
 
 class GeoGuessrAutocatcher
 {
-    // === 1. ВИНАПИ ИМПОРТЫ ===
+    
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
@@ -22,26 +22,25 @@ class GeoGuessrAutocatcher
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool CloseHandle(IntPtr hObject);
 
-    // === 2. СТРУКТУРА ДЛЯ X64 ===
+    
     [StructLayout(LayoutKind.Sequential)]
     public struct MEMORY_BASIC_INFORMATION
     {
         public IntPtr BaseAddress;
         public IntPtr AllocationBase;
         public uint AllocationProtect;
-        public uint Alignment1; // Выравнивание для x64
+        public uint Alignment1; 
         public IntPtr RegionSize;
         public uint State;
         public uint Protect;
         public uint Type;
-        public uint Alignment2; // Дополнительное выравнивание
-    }
+        public uint Alignment2; 
 
     private static readonly Regex PanoidRegex = new Regex(@"panoid\W{1,5}([a-zA-Z0-9_-]{22})(?:\W|$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private static HashSet<string> seenPanoids = new HashSet<string>();
     private static DateTime lastBrowserOpenTime = DateTime.MinValue;
 
-    // Выделяем буфер на 10 МБ заранее, чтобы не нагружать Garbage Collector
+    
     private static byte[] sharedBuffer = new byte[1024 * 1024 * 10];
 
     static void Main(string[] args)
